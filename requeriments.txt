@@ -87,7 +87,6 @@ mdurl==0.1.2
 mistune==3.0.2
 monotonic==1.6
 multidict==6.0.5
-mysql
 mysql-connector-python==9.0.0
 nbclient==0.10.0
 nbconvert==7.16.4
