@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import mysql
 import mysql.connector as con
 from sqlalchemy import create_engine
 
