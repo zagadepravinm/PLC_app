@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sqlalchemy import create_engine
 import mysql.connector as con
+from sqlalchemy import create_engine
+
 import matplotlib.pyplot as plt
 
 st.title("PLC Project")
