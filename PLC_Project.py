@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-# import mysql.connector as con
-# from sqlalchemy import create_engine
-
-# import matplotlib.pyplot as plt
+import mysql.connector as con
+from sqlalchemy import create_engine
+import matplotlib.pyplot as plt
 
 st.title("PLC Project")
 # Initialize session state for Excel_Data and current_page
