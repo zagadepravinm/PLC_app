@@ -1,6 +1,0 @@
-#connections l or s
-connection;s
-host;localhost
-database;mydatabase
-user;root
-password;1301
