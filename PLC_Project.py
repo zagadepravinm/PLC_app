@@ -4,7 +4,7 @@ import numpy as np
 # import mysql.connector as con
 # from sqlalchemy import create_engine
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 st.title("PLC Project")
 # Initialize session state for Excel_Data and current_page
