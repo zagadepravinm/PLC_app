@@ -279,7 +279,7 @@ elif current_page == "Visualization":
     # Setup the MySQL connection
     try:
         # engine = create_engine('mysql+mysqlconnector://root:1301@localhost/Mydatabase')
-        mydb = con.connect(host="sql12.freesqldatabase.com", database='sql12730015',user="sql12730015", passwd="GinngdJ8fm",use_pure=True)
+        mydb = con.connect(host="sql12.freesqldatabase.com", database='sql12730015',user="prasql12730015", passwd="GinngdJ8fmvin",use_pure=True)
         query = "SELECT * FROM PLC_table"
         df = pd.read_sql(query, mydb)
         st.success("Data Loaded from MySQL Successfully")
