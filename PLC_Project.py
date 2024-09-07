@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import mysql.connector as con
 from sqlalchemy import create_engine
+import mysql.connector as con
 import matplotlib.pyplot as plt
-
+import io
 st.title("PLC Project")
 # Initialize session state for Excel_Data and current_page
 if 'Excel_Data' not in st.session_state:
@@ -256,7 +256,7 @@ elif current_page == "Data Cleaning":
     # Button to save data to MySQL
     if st.button("Save Data"):
         if st.session_state['Excel_Data'] is not None:
-            db_connection_str = 'mysql+mysqlconnector://1234:1234.1234.com/1234'
+            db_connection_str = 'mysql+mysqlconnector://sql12730015:GinngdJ8fm@sql12.freesqldatabase.com/sql12730015'
             engine = create_engine(db_connection_str)
             try:
                 # Start loading spinner
@@ -267,7 +267,7 @@ elif current_page == "Data Cleaning":
                         chunk = st.session_state.Excel_Data.iloc[i:i+chunksize]
                         chunk.to_sql('PLC_table', con=engine, if_exists='append', index=False)
                 st.success("Data Saved to database Successfully")
-                st.session_state.Excel_Data.to_excel(r'D:\Pravin\OneDrive - SM INFORMATICS & CONTROLS\Desktop\PLC_Project.xlsx')
+                # st.session_state.Excel_Data.to_excel(r'D:\Pravin\OneDrive - SM INFORMATICS & CONTROLS\Desktop\PLC_Project.xlsx')
             except Exception as e:
                 st.error(f"An error occurred: {e}")      
         else:        
@@ -279,7 +279,7 @@ elif current_page == "Visualization":
     # Setup the MySQL connection
     try:
         # engine = create_engine('mysql+mysqlconnector://root:1301@localhost/Mydatabase')
-        mydb = con.connect(host="1234", database='1234',user="1234", passwd="1234",use_pure=True)
+        mydb = con.connect(host="sql12.freesqldatabase.com", database='sql12730015',user="sql12730015", passwd="GinngdJ8fm",use_pure=True)
         query = "SELECT * FROM PLC_table"
         df = pd.read_sql(query, mydb)
         st.success("Data Loaded from MySQL Successfully")
@@ -342,13 +342,25 @@ elif current_page == "Visualization":
         # st.dataframe(filtered_df[display_columns])
 
         
-        if st.button("Extract Data"):
-            filtered_df.to_excel(r'D:\Pravin\OneDrive - SM INFORMATICS & CONTROLS\Desktop\Filtered_PLC_Data.xlsx')
-            st.success("Data Extracted Successfully")
-
-   
+        if st.button("Download"):
+            try:
+                # Convert DataFrame to an Excel file in memory
+                buffer = io.BytesIO()  # Create an in-memory buffer to hold the Excel file
+                with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+                    filtered_df.to_excel(writer, index=False)  # Write DataFrame to Excel file
+                buffer.seek(0)  # Move cursor to the beginning of the buffer
+                # Download the Excel file directly on the user's PC
+                st.download_button(
+                    label="Download Excel file",
+                    data=buffer,
+                    file_name="Filtered_PLC_Data.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+                st.success("Data ready for download.")
+            except Exception as e:
+                st.error(f"An error occurred while downloading the file: {e}")
     except Exception as e:
-        st.error(f"An error occurred while fetching the data from MySQL: {e}")        
+                st.error(f"An error occurred while fetching the data from MySQL: {e}")        
 
 
 
