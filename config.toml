@@ -1,4 +1,2 @@
 [server]
 maxUploadSize = 5000
-# [build]
-# requirements="requirements.txt"
