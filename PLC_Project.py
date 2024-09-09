@@ -105,7 +105,33 @@ elif current_page == "Data Cleaning":
 
 
                 ##2.PLC_dataset['Experience Check']
-                PLC_dataset['Experience Check'] = PLC_dataset['Total_Exp_Mnths'].apply(lambda x: '4 or more than 4 years' if x >= 48 else 'Less than 4 years')
+                def convert_months_to_years(months):
+                    years = months // 12
+                    remaining_months = months % 12
+                    if years >= 1 and years < 2:
+                        return '1 yr to 2 yrs'
+                    elif years >= 2 and years < 3:
+                        return '2 yrs to 3 yrs'
+                    elif years >= 3 and years < 4:
+                        return '3 yrs to 4 yrs'
+                    elif years >= 4 and years < 5:
+                        return '4 yrs to 5 yrs'
+                    elif years >= 5 and years < 6:
+                        return '5 yrs to 6 yrs'
+                    elif years >= 6 and years < 7:
+                        return '6 yrs to 7 yrs'
+                    elif years >= 7 and years < 8:
+                        return '7 yrs to 8 yrs'
+                    elif years >= 8 and years < 9:
+                        return '8 yrs to 9 yrs'
+                   
+                    # Add more conditions as needed
+                    else:
+                        return 'more than 9 yrs'
+
+                # Apply the function to the 'Total_Exp_Mnths' column
+                PLC_dataset['Experience Check'] = PLC_dataset['Total_Exp_Mnths'].apply(convert_months_to_years)
+
 
 
 
@@ -138,13 +164,24 @@ elif current_page == "Data Cleaning":
                     period = period.lower().replace(" ", "")
                     
                     # Define patterns to match
-                    patterns = ["15daysorless", "15dayorless", "15daysorles"]
-                    
+                    patterns_15_days = ["15daysorless", "15dayorless", "15daysorles"]
+                    patterns_1_month = ["1month", "1months", "onemonth","onemonths"]
+                    patterns_2_month = ["2month", "2months", "twomonth","twomonths"]
+                    patterns_3_month = ["3month", "3months", "threemonth","threemonths"]
                     # Check if the normalized text matches any of the patterns
-                    if any(pattern in period for pattern in patterns):
+                    # Check if the normalized text matches any of the patterns
+                    if any(pattern in period for pattern in patterns_15_days):
                         return '15 days or less'
+                    elif any(pattern in period for pattern in patterns_1_month):
+                        return '1 Month'
+                    elif any(pattern in period for pattern in patterns_2_month):
+                        return '2 Months'
+                    elif any(pattern in period for pattern in patterns_3_month):
+                        return '3 Months'
                     else:
-                        return 'more than 15 days'  # Or another appropriate classification
+                        return 'Other'  # Or another appropriate classification
+                    
+                    
 
                 # Apply the function to create the new column
                 PLC_dataset['NoticePeriodCheck'] = PLC_dataset['Ans(What is your notice period ?)'].apply(classify_notice_period)
