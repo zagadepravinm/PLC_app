@@ -105,6 +105,7 @@ elif current_page == "Data Cleaning":
 
 
                 ##2.PLC_dataset['Experience Check']
+                # PLC_dataset['Experience Check'] = PLC_dataset['Total_Exp_Mnths'].apply(lambda x: '4 or more than 4 years' if x >= 48 else 'Less than 4 years')
                 def convert_months_to_years(months):
                     years = months // 12
                     remaining_months = months % 12
@@ -132,8 +133,7 @@ elif current_page == "Data Cleaning":
                 # Apply the function to the 'Total_Exp_Mnths' column
                 PLC_dataset['Experience Check'] = PLC_dataset['Total_Exp_Mnths'].apply(convert_months_to_years)
 
-
-
+                 
 
 
 
@@ -163,7 +163,7 @@ elif current_page == "Data Cleaning":
                     # Normalize text to lowercase and remove extra spaces
                     period = period.lower().replace(" ", "")
                     
-                    # Define patterns to match
+                        # Define patterns to match
                     patterns_15_days = ["15daysorless", "15dayorless", "15daysorles"]
                     patterns_1_month = ["1month", "1months", "onemonth","onemonths"]
                     patterns_2_month = ["2month", "2months", "twomonth","twomonths"]
@@ -180,9 +180,6 @@ elif current_page == "Data Cleaning":
                         return '3 Months'
                     else:
                         return 'Other'  # Or another appropriate classification
-                    
-                    
-
                 # Apply the function to create the new column
                 PLC_dataset['NoticePeriodCheck'] = PLC_dataset['Ans(What is your notice period ?)'].apply(classify_notice_period)
 
@@ -293,7 +290,7 @@ elif current_page == "Data Cleaning":
     # Button to save data to MySQL
     if st.button("Save Data"):
         if st.session_state['Excel_Data'] is not None:
-            db_connection_str = 'mysql+mysqlconnector://sql12730015:GinngdJ8fm@sql12.freesqldatabase.com/sql12730015'
+            db_connection_str = 'mysql+mysqlconnector://root:1301@localhost/Mydatabase'
             engine = create_engine(db_connection_str)
             try:
                 # Start loading spinner
@@ -316,7 +313,7 @@ elif current_page == "Visualization":
     # Setup the MySQL connection
     try:
         # engine = create_engine('mysql+mysqlconnector://root:1301@localhost/Mydatabase')
-        mydb = con.connect(host="sql12.freesqldatabase.com", database='sql12730015',user="sql12730015", passwd="GinngdJ8fm",use_pure=True)
+        mydb = con.connect(host="localhost", database='Mydatabase',user="root", passwd="1301",use_pure=True)
         query = "SELECT * FROM PLC_table"
         df = pd.read_sql(query, mydb)
         st.success("Data Loaded from MySQL Successfully")
@@ -350,14 +347,14 @@ elif current_page == "Visualization":
             title = custom_titles.get(col, col)
         
             # Get unique values from the column and add 'All' at the beginning
-            unique_values = ['All'] + sorted(filtered_df[col].dropna().unique().tolist())
+            unique_values = unique_values = sorted(filtered_df[col].dropna().unique().tolist())
         
             # Create a selectbox for filtering
-            selected_value = st.selectbox(f'Select {title}', unique_values, key=col)
+            selected_values = st.multiselect(f'Select {title}', unique_values, key=col)
     
             # Filter the DataFrame based on the selected value, unless 'All' is selected
-            if selected_value != 'All':
-                filtered_df = filtered_df[filtered_df[col] == selected_value]
+            if selected_values:
+                filtered_df = filtered_df[filtered_df[col].isin(selected_values)]
 
         # Display the filtered data (modify as needed)
         filtered_df.reset_index(drop=True, inplace=True)
