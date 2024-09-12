@@ -290,7 +290,7 @@ elif current_page == "Data Cleaning":
     # Button to save data to MySQL
     if st.button("Save Data"):
         if st.session_state['Excel_Data'] is not None:
-            db_connection_str = 'mysql+mysqlconnector://sql12730015:GinngdJ8fm@sql12.freesqldatabase.com/sql12730015'
+            db_connection_str = 'mysql+mysqlconnector://121:121@222/323'
             engine = create_engine(db_connection_str)
             try:
                 # Start loading spinner
@@ -313,7 +313,7 @@ elif current_page == "Visualization":
     # Setup the MySQL connection
     try:
         # engine = create_engine('mysql+mysqlconnector://root:1301@localhost/Mydatabase')
-        mydb = con.connect(host="sql12.freesqldatabase.com",database='sql12730015',user="sql12730015",passwd="GinngdJ8fm",use_pure=True)
+        mydb = con.connect(host="112",database='121',user="123",passwd="321",use_pure=True)
         query = "SELECT * FROM PLC_table"
         df = pd.read_sql(query, mydb)
         st.success("Data Loaded from MySQL Successfully")
